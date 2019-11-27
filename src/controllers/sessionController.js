@@ -1,17 +1,18 @@
-const jwt = require ('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const authConfig = require ('../config/auth');
 const alunas = require("../model/alunas.json");
 
 exports.getToken = (req, res) => {
-    const { name } = req.body;
-    const user = alunas.find( e => e.nome == name)
+  const { name } = req.body;
+  const user = alunas.find(e => e.nome == name)
 
-    if (!user) {
-        return res.status(401).json({error: 'user not found'});
-    }
-}
+  if (!user) {
+    return res.status(401).json({ error: 'user not found' });
+  }
 
-try {
+  const {id, nome} = user;
+  
+  try {
     return res.json({
       user: {
         id,
@@ -21,8 +22,7 @@ try {
         expiresIn: authConfig.expiresIn,
       }),
     });
-  }
-  catch (e) {
+  } catch (e) {
     return res.status(401).json({ error: 'erro' });
   }
-
+}
